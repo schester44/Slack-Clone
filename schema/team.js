@@ -6,4 +6,8 @@ export default `
         messages: Message!
         teams: [Team!]!
     }
+
+    type Mutation {
+        createTeam(name: String!): Boolean!
+    }
 `
