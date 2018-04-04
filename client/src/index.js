@@ -9,6 +9,8 @@ import { ApolloProvider } from "react-apollo"
 import { HttpLink } from "apollo-link-http"
 import { InMemoryCache } from "apollo-cache-inmemory"
 
+import "semantic-ui-css/semantic.min.css"
+
 const client = new ApolloClient({
 	link: new HttpLink({ uri: "http://localhost:3333/graphql" }),
 	cache: new InMemoryCache()
