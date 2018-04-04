@@ -1,13 +1,17 @@
 export default `
-    type User {
-        id: Int!
-        username: String!
-        email: String!
-        messages: Message!
-        teams: [Team!]!
+    type Team {
+        owner: User!
+        members: [User!]!
+        channels: [Channel!]!
     }
 
+    type CreateTeamResponse {
+        ok: Boolean!
+        errors: [Error!]
+    }
+
+
     type Mutation {
-        createTeam(name: String!): Boolean!
+        createTeam(name: String!): CreateTeamResponse!
     }
 `

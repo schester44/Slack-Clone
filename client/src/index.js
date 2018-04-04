@@ -1,19 +1,12 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import registerServiceWorker from "./registerServiceWorker"
-import { ApolloClient } from "apollo-client"
 import { ApolloProvider } from "react-apollo"
-import { HttpLink } from "apollo-link-http"
-import { InMemoryCache } from "apollo-cache-inmemory"
 
 import Routes from "./routes"
-
 import "semantic-ui-css/semantic.min.css"
 
-const client = new ApolloClient({
-	link: new HttpLink({ uri: "http://localhost:3333/graphql" }),
-	cache: new InMemoryCache()
-})
+import client from "./apollo/createClient"
 
 const App = (
 	<ApolloProvider client={client}>

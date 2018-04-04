@@ -9,7 +9,7 @@ class CreateTeam extends Component {
 		super(props)
 
 		this.state = {
-            teamName: "",
+            name: "",
             error: ""
 		}
 
@@ -22,36 +22,35 @@ class CreateTeam extends Component {
 	}
 
 	async handleSubmit() {
-		const { teamName } = this.state
+		const { name } = this.state
 
-		const response = await this.props.mutate({variables: { teamName }})
+		const response = await this.props.mutate({variables: { name }})
 
-		const { ok,  errors } = response.data.login
+		const { ok,  errors } = response.data.createTeam
 
 		if (ok) {
-            // todo
+			this.props.history.push('/')
         } else {
 			this.setState({ error: errors[0].message })
 		}
 	}
 
 	render() {
-		const { teamName, error } = this.state
+		const { name, error } = this.state
 
 		return (
 			<Container>
 				<Header as="h1">Create Team</Header>
-
 				{error.length > 0 && <Message color="red">{error}</Message>}
 
 				<Form>
-					<Form.Field>
+					<Form.Field error={!!error}>
 						<label>Team Name</label>
 						<input
 							size="large"
 							type="text"
-							name="teamName"
-							value={teamName.value}
+							name="name"
+							value={name.value}
 							placeholder="Team Name"
 							onChange={this.handleInputChange}
 						/>
@@ -66,15 +65,16 @@ class CreateTeam extends Component {
 	}
 }
 
-const creationMutation = gql`
+const creationTeamMutation = gql`
 	mutation($name: String!) {
 		createTeam(name: $name) {
 			ok
 			errors {
+				path
 				message
 			}
 		}
 	}
 `
 
-export default graphql(creationMutation)(CreateTeam)
+export default graphql(creationTeamMutation)(CreateTeam)

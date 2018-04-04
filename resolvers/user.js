@@ -1,4 +1,3 @@
-import bcrypt from "bcrypt"
 import { tryLogin, tryRegister } from "../auth"
 
 export default {
