@@ -1,6 +1,7 @@
 import path from "path"
 import express from "express"
 import bodyParser from "body-parser"
+import cors from "cors"
 import { graphqlExpress, graphiqlExpress } from "apollo-server-express"
 import { makeExecutableSchema } from "graphql-tools"
 import { fileLoader, mergeTypes, mergeResolvers } from "merge-graphql-schemas"
@@ -16,7 +17,7 @@ const app = express()
 
 const graphqlEndpoint = "/graphql"
 
-app.use(graphqlEndpoint, bodyParser.json(), graphqlExpress({ schema, context: { models, user: { id: 1 } } }))
+app.use(graphqlEndpoint, cors(), bodyParser.json(), graphqlExpress({ schema, context: { models, user: { id: 1 } } }))
 
 app.use("/graphiql", graphiqlExpress({ endpointURL: graphqlEndpoint }))
 
