@@ -1,13 +1,12 @@
 import React from "react"
 import ReactDOM from "react-dom"
 import registerServiceWorker from "./registerServiceWorker"
-
-import Routes from "./routes"
-
 import { ApolloClient } from "apollo-client"
 import { ApolloProvider } from "react-apollo"
 import { HttpLink } from "apollo-link-http"
 import { InMemoryCache } from "apollo-cache-inmemory"
+
+import Routes from "./routes"
 
 import "semantic-ui-css/semantic.min.css"
 

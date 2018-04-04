@@ -17,7 +17,10 @@ const app = express()
 
 const graphqlEndpoint = "/graphql"
 
-app.use(graphqlEndpoint, cors(), bodyParser.json(), graphqlExpress({ schema, context: { models, user: { id: 1 } } }))
+const SECRET = "amchaha35najcja3n2bahac"
+const SECRET2 = "xj2h2n2njsjshdhxxx"
+
+app.use(graphqlEndpoint, cors(), bodyParser.json(), graphqlExpress({ schema, context: { models, user: { id: 1 }, SECRET, SECRET2 } }))
 
 app.use("/graphiql", graphiqlExpress({ endpointURL: graphqlEndpoint }))
 
