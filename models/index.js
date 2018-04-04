@@ -2,6 +2,7 @@ import Sequelize from "sequelize"
 
 const sequelize = new Sequelize("slack", "root", "root", {
 	dialect: "mysql",
+	operatorsAliases: Sequelize.Op,
 	host: "localhost",
 	port: 8889,
 

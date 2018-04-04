@@ -5,6 +5,7 @@ import { ApolloProvider } from "react-apollo"
 
 import Routes from "./routes"
 import "semantic-ui-css/semantic.min.css"
+import "./index.css"
 
 import client from "./apollo/createClient"
 

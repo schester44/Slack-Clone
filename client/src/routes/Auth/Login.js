@@ -19,6 +19,7 @@ class Login extends Component {
 
 		this.handleInputChange = this.handleInputChange.bind(this)
 		this.handleSubmit = this.handleSubmit.bind(this)
+
 	}
 
 	handleInputChange({ target: { name, value } }) {
@@ -41,7 +42,8 @@ class Login extends Component {
 		if (ok) {
 			localStorage.setItem("token", token)
 			localStorage.setItem("refreshToken", refreshToken)
-			this.props.history.push(routes.home)
+			const previousRoute = ((this.props.location.state || {}).from || {}).pathname
+			this.props.history.push(previousRoute || routes.home)
 		} else {
 			this.setState({ error: errors[0].message })
 		}

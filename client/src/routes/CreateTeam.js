@@ -1,6 +1,7 @@
 import React, { Component } from "react"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
+import { routes } from "../routes"
 
 import { Message, Container, Form, Button, Header } from "semantic-ui-react"
 
@@ -23,8 +24,15 @@ class CreateTeam extends Component {
 
 	async handleSubmit() {
 		const { name } = this.state
+		let response = null
 
-		const response = await this.props.mutate({variables: { name }})
+		try {
+			response = await this.props.mutate({variables: { name }})
+		} catch (error) {
+			this.props.history.push(routes.auth.login)
+			return;
+		}
+
 
 		const { ok,  errors } = response.data.createTeam
 
