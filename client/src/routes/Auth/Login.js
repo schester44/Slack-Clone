@@ -41,9 +41,11 @@ class Login extends Component {
 			}
 		})
 
-		const { ok, errors } = response.data.login
+		const { ok, token, refreshToken, errors } = response.data.login
 
 		if (ok) {
+			localStorage.setItem('token', token)
+			localStorage.setItem('refreshToken', refreshToken)
 			this.props.history.push(routes.home)
 		} else {
 			this.setState({ error: errors[0].message })
@@ -97,8 +99,9 @@ const loginMutation = gql`
 	mutation($email: String!, $password: String!) {
 		login(email: $email, password: $password) {
 			ok
+			token
+			refreshToken
 			errors {
-				path
 				message
 			}
 		}

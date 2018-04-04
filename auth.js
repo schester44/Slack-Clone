@@ -35,25 +35,9 @@ export const createTokens = ({ id }, secret, refreshSecret) => {
 	return Promise.all([createToken, createRefreshToken])
 }
 
-export const tryRegister = async ({ password, ...rest }, models) => {
+export const tryRegister = async (args, models) => {
 	try {
-		if (password.length < 4 || password.length > 100) {
-			return {
-				ok: false,
-				errors: [
-					{
-						path: "password",
-						message:
-							password.length < 4
-								? "Your password must be more than 4 characters"
-								: "Your password must be less than 100 characters"
-					}
-				]
-			}
-		}
-
-		const hashedPassword = await bcrypt.hash(password, 12)
-		const user = await models.User.create({ ...rest, password: hashedPassword })
+		const user = await models.User.create(args)
 		return {
 			ok: true,
 			user
