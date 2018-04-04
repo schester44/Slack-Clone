@@ -23,7 +23,7 @@ class Login extends Component {
 
 	handleInputChange({ target: { name, value } }) {
 		this.setState({
-			error: '',
+			error: "",
 			fields: {
 				...this.state.fields,
 				[name]: value
@@ -34,18 +34,13 @@ class Login extends Component {
 	async handleSubmit() {
 		const { email, password } = this.state.fields
 
-		const response = await this.props.mutate({
-			variables: {
-				email: email,
-				password: password
-			}
-		})
+		const response = await this.props.mutate({ variables: { email, password } })
 
 		const { ok, token, refreshToken, errors } = response.data.login
 
 		if (ok) {
-			localStorage.setItem('token', token)
-			localStorage.setItem('refreshToken', refreshToken)
+			localStorage.setItem("token", token)
+			localStorage.setItem("refreshToken", refreshToken)
 			this.props.history.push(routes.home)
 		} else {
 			this.setState({ error: errors[0].message })

@@ -3,14 +3,6 @@ import jwt from "jsonwebtoken"
 
 const loginFailResponse = { ok: false, errors: [{ path: "default", message: "Invalid email and/or password" }] }
 
-export const formatErrors = (error, models) => {
-	if (error instanceof models.sequelize.ValidationError) {
-		return error.errors.map(({ path, message }) => ({ path, message }))
-	}
-
-	return { path: "name", message: "something went wrong" }
-}
-
 export const createTokens = ({ id }, secret, refreshSecret) => {
 	const createToken = jwt.sign(
 		{
@@ -42,10 +34,10 @@ export const tryRegister = async (args, models) => {
 			ok: true,
 			user
 		}
-	} catch (err) {
+	} catch ({ errors }) {
 		return {
 			ok: false,
-			errors: formatErrors(err, models)
+			errors: errors.map(({ path, message }) => ({ path, message }))
 		}
 	}
 }
