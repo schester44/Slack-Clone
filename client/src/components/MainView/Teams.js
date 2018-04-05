@@ -1,5 +1,7 @@
 import React from "react"
 import styled from "styled-components"
+import { Link } from "react-router-dom"
+import { routes } from "../../routes"
 
 const TeamListWrapper = styled.div`
 	padding-top: 10px;
@@ -9,6 +11,11 @@ const TeamListWrapper = styled.div`
 	display: flex;
 	flex-direction: column;
 	align-items: center;
+	overflow-y: auto;
+
+	&::-webkit-scrollbar {
+		display: none;
+	}
 `
 
 const Team = styled.div`
@@ -20,16 +27,32 @@ const Team = styled.div`
 	border-radius: 10px;
 	width: 40px;
 	height: 40px;
+	min-height: 40px;
 	color: white;
 	margin-bottom: 10px;
-	cursor: pointer;
+	text-transform: uppercase;
+	user-select: none;
 
-	&:hover {
-		background: rgba(89, 98, 116, 1);
-		box-shadow: 0px 2px 10px rgba(32, 32, 32, 0.5);
+	${props =>
+		props.isActive &&
+		`
+		background: white;
+		color: rgba(37, 181, 169, 1.0);
+		`} &:hover {
+		${props =>
+			!props.isActive &&
+			`
+			background: rgba(89, 98, 116, 1);
+			cursor: pointer;
+			box-shadow: 0px 2px 10px rgba(32, 32, 32, 0.5);
+			`};
 	}
 `
-const team = ({ id, initials }) => <Team key={`team-${id}`}>{initials}</Team>
+const team = ({ id, initials, isActive }) => (
+	<Link key={`team-${id}`} to={`${routes.team}/${id}`}>
+		<Team isActive={isActive}>{initials}</Team>
+	</Link>
+)
 
 const Teams = ({ teams }) => {
 	return <TeamListWrapper>{teams.map(team)}</TeamListWrapper>

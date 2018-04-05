@@ -10,8 +10,8 @@ class CreateTeam extends Component {
 		super(props)
 
 		this.state = {
-            name: "",
-            error: ""
+			name: "",
+			error: ""
 		}
 
 		this.handleInputChange = this.handleInputChange.bind(this)
@@ -27,18 +27,17 @@ class CreateTeam extends Component {
 		let response = null
 
 		try {
-			response = await this.props.mutate({variables: { name }})
+			response = await this.props.mutate({ variables: { name } })
 		} catch (error) {
 			this.props.history.push(routes.auth.login)
-			return;
+			return
 		}
 
-
-		const { ok,  errors } = response.data.createTeam
+		const { ok, errors, team } = response.data.createTeam
 
 		if (ok) {
-			this.props.history.push('/')
-        } else {
+			this.props.history.push(`${routes.team}/${team.id}`)
+		} else {
 			this.setState({ error: errors[0].message })
 		}
 	}
@@ -77,6 +76,9 @@ const creationTeamMutation = gql`
 	mutation($name: String!) {
 		createTeam(name: $name) {
 			ok
+			team {
+				id
+			}
 			errors {
 				path
 				message

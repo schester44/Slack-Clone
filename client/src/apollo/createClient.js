@@ -13,6 +13,7 @@ const middlewareLink = new ApolloLink((operation, forward) => {
             'x-refresh-token': localStorage.getItem('refreshToken')
         }
     })
+    
     return forward(operation).map((response) => {
         const context = operation.getContext()
         const { response: { headers } } = context

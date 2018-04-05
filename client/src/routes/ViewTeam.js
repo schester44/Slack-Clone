@@ -1,7 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import Teams from "../components/MainView/Teams"
-import Channels from "../components/MainView/Channels"
+import Sidebar from "../containers/Sidebar"
 import RoomHeader from "../components/MainView/RoomHeader"
 import ChatWindow from "../components/MainView/ChatWindow"
 
@@ -17,19 +16,14 @@ const App = styled.div`
 	}
 `
 
-const ViewTeam = () => {
+const ViewTeam = ({ match: { params }}) => {
 
 	const channelName = "general"
+	const currentTeamId = parseInt(params.teamId, 10)
 
 	return (
 		<App>
-			<Teams teams={[{ id: 1, initials: 'TA'}, { id: 1, initials: "MB"}]} />
-			<Channels
-				teamName="Random Team"
-				username="My Username"
-				channels={[{ id: 1, name: "general" }, { id: 2, name: "random" }]}
-				users={[{id: 1, username: "slackbot"}, { id: 2, username: "bob"}]}
-			/>
+			<Sidebar currentTeamId={currentTeamId} />
 			<div className="main">
 				<RoomHeader channelName={channelName} />
 				<ChatWindow channelName={channelName} />

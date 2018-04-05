@@ -54,7 +54,7 @@ export default () => {
 				<Route exact path={routes.home} component={Home} />
 				<Route path={routes.auth.register} component={Register} />
 				<Route path={routes.auth.login} component={Login} />
-				<Route path={routes.team} component={ViewTeam} />
+				<Route path={`${routes.team}/:teamId?/:channelId?`} component={ViewTeam} />
 				<PrivateRoute path={routes.teams.create} component={CreateTeam} />
 			</Switch>
 		</Router>
