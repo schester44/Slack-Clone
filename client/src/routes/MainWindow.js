@@ -1,4 +1,4 @@
-import React from "react"
+import React, { Component } from "react"
 import styled from "styled-components"
 import { graphql } from "react-apollo"
 import decode from "jwt-decode"
@@ -33,23 +33,48 @@ const getActiveTeam = (teams, id) => {
 	return teamIndex >= 0 ? teams[teamIndex] : teams[0]
 }
 
-const MainWindow = ({ data: { loading, allTeams }, match: { params } }) => {
-	if (loading) return null
+class MainWindow extends Component {
+	constructor(props) {
+		super(props)
+	}
 
-	const { user } = decode(localStorage.getItem("token"))
+	componentWillReceiveProps({ data }) {
+		if (data.error && data.error.graphQLErrors) {
+			data.error.graphQLErrors.forEach((error) => {
+				if (error.name === "AuthenticationRequiredError") {
+					this.props.history.push(routes.auth.login)
+					return;
+				}
 
-	const team = getActiveTeam(allTeams, params.teamId)
-	const currentChannel = getActiveChannel(team, params.channelId)
-	
-	return (
-		<App>
-			<Sidebar user={user} teams={allTeams} channel={currentChannel} currentTeam={team} />
-			<div className="main">
-				<RoomHeader channel={currentChannel} />
-				<ChatWindow channel={currentChannel} />
-			</div>
-		</App>
-	)
+				if (error.name === "NoTeamsExistError") {
+					this.props.history.push(routes.teams.create)
+					return;
+				 }
+			 })
+		}
+
+	}
+
+	render() {
+		const { data: { loading, allTeams }, match: { params } } = this.props
+
+		if (loading || !allTeams || allTeams.length === 0) return null
+
+		const { user } = decode(localStorage.getItem("token"))
+
+		const team = getActiveTeam(allTeams, params.teamId)
+		const currentChannel = getActiveChannel(team, params.channelId)
+
+		return (
+			<App>
+				<Sidebar user={user} teams={allTeams} channel={currentChannel} currentTeam={team} />
+				<div className="main">
+					<RoomHeader channel={currentChannel} />
+					<ChatWindow channel={currentChannel} />
+				</div>
+			</App>
+		)
+	}
 }
 
 export default graphql(allTeamsQuery)(MainWindow)

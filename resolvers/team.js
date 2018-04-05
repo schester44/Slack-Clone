@@ -1,10 +1,17 @@
 import { isAuthenticatedResolver } from "../auth/permissions"
+import { createError } from "apollo-errors"
+
+const NoTeamsExistError = createError("NoTeamsExistError", {
+	message: `You haven't created a team yet`
+})
 
 export default {
 	Query: {
 		allTeams: isAuthenticatedResolver.createResolver(
 			async (parent, args, { models: { Team }, user }) => {
-				return await Team.findAll({ where: { owner: user.id } }, { raw: true })
+				const teams = await Team.findAll({ where: { owner: user.id } }, { raw: true })
+				if (teams.length === 0) throw new NoTeamsExistError()
+				return teams
 			})
 	},
 	Mutation: {
