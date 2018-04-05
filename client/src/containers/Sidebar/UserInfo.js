@@ -9,7 +9,6 @@ const Wrapper = styled.div`
 	margin-bottom: 20px;
 	padding-right: 5px;
 	cursor: pointer;
-	position: relative;
 
 	h5 {
 		font-size: 14px;
@@ -74,7 +73,7 @@ class UserInfo extends Component {
 				</div>
 
 				{this.state.optionsVisible && (
-					<Menu size="large" style={{ position: "absolute", left: 0, top: 30 }} vertical>
+					<Menu size="large" style={{ zIndex:9999, position: "absolute", left: 65, top: 65 }} vertical>
 						<Menu.Item style={{ display: "flex", alignItems: "center", justifyContent: "space-between" }}>
 							<UserDetails color="black" username={username} teamName={teamName} />
 							<Icon

@@ -19,10 +19,10 @@ const Wrapper = styled.div`
 	}
 `
 
-const RoomHeader = ({ channelName }) => (
+const RoomHeader = ({ channel }) => (
 	<Wrapper>
 		<div>
-			<h1>#{channelName}</h1>
+			<h1>#{channel.name}</h1>
             <div>
 				<Icon name="empty star" /> | <Icon name="users" /> 6513 | Some room description
 			</div>

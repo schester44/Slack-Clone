@@ -4,7 +4,7 @@ import { InMemoryCache } from "apollo-cache-inmemory"
 import { createHttpLink } from "apollo-link-http"
 import { ApolloLink } from "apollo-link"
 
-const httpLink = createHttpLink({ uri: "http://localhost:3333/graphql" })
+const httpLink = createHttpLink({ uri: "http://10.16.14.95:3333/graphql" })
 
 const middlewareLink = new ApolloLink((operation, forward) => {
     operation.setContext({

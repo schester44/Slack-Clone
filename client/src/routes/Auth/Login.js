@@ -43,8 +43,7 @@ class Login extends Component {
 		if (ok) {
 			localStorage.setItem("token", token)
 			localStorage.setItem("refreshToken", refreshToken)
-			const previousRoute = ((this.props.location.state || {}).from || {}).pathname
-			this.props.history.push(previousRoute || routes.home)
+			this.props.history.push(routes.team)
 		} else {
 			this.setState({ error: errors[0].message })
 		}

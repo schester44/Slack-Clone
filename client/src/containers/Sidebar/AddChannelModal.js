@@ -4,6 +4,13 @@ import { graphql } from "react-apollo"
 import { createChannelMutation } from "../../graphql/mutations/channels"
 import { allTeamsQuery } from "../../graphql/queries/teams"
 
+const initialState = {
+	fields: {
+		name: "",
+		isPublic: true
+	},
+	isSubmitting: false
+}
 class AddChannelModal extends Component {
 	constructor(props) {
 		super(props)
@@ -42,13 +49,25 @@ class AddChannelModal extends Component {
 
 		const response = await this.props.mutate({
 			variables: { teamId, name },
+			optimisticResponse: {
+				__typename: "Mutation",
+				createChannel: {
+					__typename: "Mutation",
+					ok: true,
+					channel: {
+						__typename: "Channel",
+						id: -1,
+						name
+					}
+				}
+			},
 			update: (store, { data: { createChannel } }) => {
 				const { ok, channel } = createChannel
 				if (!ok) return
 
 				const data = store.readQuery({ query: allTeamsQuery })
 				const teamIndex = data.allTeams.findIndex(t => t.id === teamId)
-				
+
 				data.allTeams[teamIndex].channels.push(channel)
 				store.writeQuery({ query: allTeamsQuery, data })
 			}
@@ -56,6 +75,13 @@ class AddChannelModal extends Component {
 
 		if (response.data.createChannel) {
 			this.props.onClose()
+			this.setState({
+				...initialState,
+				fields: {
+					...this.state.fields,
+					...initialState.fields
+				}
+			})
 		} else {
 			// TODO: Report error
 		}

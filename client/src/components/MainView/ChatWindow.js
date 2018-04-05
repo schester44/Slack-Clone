@@ -19,12 +19,12 @@ const ChatInput = styled.div`
     
 `
 
-const ChatWindow = ({ channelName }) => {
+const ChatWindow = ({ channel }) => {
 	return (
 		<Wrapper>
 			<Messages />
 			<ChatInput>
-				<Input fluid placeholder={`Message #${channelName}`} />
+				<Input fluid placeholder={`Message #${channel.name}`} />
 			</ChatInput>
 		</Wrapper>
 	)

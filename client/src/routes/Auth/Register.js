@@ -5,7 +5,7 @@ import { Header, Grid } from "semantic-ui-react"
 
 const Register = ({ history }) => {
 	const handleSuccess = response => {
-		history.push(routes.home)
+		history.push(routes.gettingStarted)
 	}
 
 	return (

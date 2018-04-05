@@ -53,8 +53,6 @@ app.use(
 	cors(),
 	bodyParser.json(),
 	graphqlExpress(req => {
-		console.log(req.user);
-
 		return {
 			schema,
 			context: {
