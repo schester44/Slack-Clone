@@ -1,9 +1,12 @@
 import { tryLogin, tryRegister } from "../auth"
+import { isAuthenticatedResolver } from "../auth/permissions"
 
 export default {
 	Query: {
-		getUser: (parent, { id }, { models }) => models.User.findOne({ where: { id } }),
-		allUsers: (parent, args, { models }) => models.User.findAll()
+		getUser: isAuthenticatedResolver.createResolver((parent, { id }, { models }) =>
+			models.User.findOne({ where: { id } })
+		),
+		allUsers: isAuthenticatedResolver.createResolver((parent, args, { models }) => models.User.findAll())
 	},
 	Mutation: {
 		login: async (parent, { email, password }, { models, SECRET, SECRET2 }) =>

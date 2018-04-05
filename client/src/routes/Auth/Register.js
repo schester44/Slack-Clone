@@ -1,6 +1,6 @@
 import React from "react"
 import { routes } from "../../routes"
-import UserRegistrationForm from "../../components/Form/UserRegistrationForm"
+import UserRegistrationForm from "../../components/form/UserRegistrationForm"
 import { Header, Grid } from "semantic-ui-react"
 
 const Register = ({ history }) => {

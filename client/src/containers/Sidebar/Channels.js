@@ -28,7 +28,7 @@ const List = styled.ul`
 	li {
 		margin: 0;
 		padding: 1px 0;
-		
+
 		&:not(.heading):hover {
 			cursor: pointer;
 			color: rgba(180, 180, 180, 1);
@@ -44,6 +44,19 @@ const List = styled.ul`
 	}
 `
 
+const InviteButton = styled.button`
+	border: 0;
+	padding: 2px 4px;
+	border-radius: 5px;
+	background: #e0e1e2;
+	width: 40px;
+	height: 20px;
+	color: rgba(0, 0, 0, 0.6);
+	font-size: 0.78571429rem;
+	cursor: pointer;
+	outline: none;
+`
+
 const user = ({ id, username }) => (
 	<li key={`user-${id}`} style={{ display: "flex" }}>
 		<div style={{ position: "relative", marginRight: 3 }}>
@@ -56,9 +69,14 @@ const user = ({ id, username }) => (
 	</li>
 )
 
-const Channels = ({ teamId, teamName, username, channels, users, onCreationChannelClick }) => {
+const Channels = ({ teamId, teamName, username, channels, users, onCreationChannelClick, onInvitePeopleClick }) => {
 	return (
 		<Wrapper>
+			<div style={{ display: "flex", justifyContent: "space-between", paddingRight: 5 }}>
+				<h5 style={{ color: "rgba(211,211,211,1.0)" }}>{teamName}</h5>
+				<InviteButton onClick={onInvitePeopleClick}>Invite</InviteButton>
+			</div>
+
 			<UserInfo teamName={teamName} username={username} />
 
 			<List>

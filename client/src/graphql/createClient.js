@@ -1,12 +1,11 @@
 import { ApolloClient } from "apollo-client"
 import { InMemoryCache } from "apollo-cache-inmemory"
+import { onError } from "apollo-link-error"
 
-import { createHttpLink } from "apollo-link-http"
+import { HttpLink } from "apollo-link-http"
 import { ApolloLink } from "apollo-link"
 
-const httpLink = createHttpLink({ uri: "http://10.16.14.95:3333/graphql" })
-
-const middlewareLink = new ApolloLink((operation, forward) => {
+const AuthLink = new ApolloLink((operation, forward) => {
     operation.setContext({
         headers: {
             'x-token': localStorage.getItem("token"),
@@ -35,7 +34,17 @@ const middlewareLink = new ApolloLink((operation, forward) => {
     })
 })
 
-const link = middlewareLink.concat(httpLink)
+const onErrorLink = onError(({ graphQLErrors, networkError }) => {
+    // TODO, handle errors
+})
+
+const link = ApolloLink.from([
+    onErrorLink,
+    AuthLink,
+	new HttpLink({
+		uri: "http://10.16.14.95:3333/graphql"
+	}),
+])
 
 const cache = new InMemoryCache()
 

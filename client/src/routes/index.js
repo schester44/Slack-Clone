@@ -1,6 +1,5 @@
 import React from "react"
-import { Redirect, Switch, Route, BrowserRouter as Router } from "react-router-dom"
-import decode from "jwt-decode"
+import { Switch, Route, BrowserRouter as Router } from "react-router-dom"
 
 import Home from "./Home"
 import Register from "./Auth/Register"
@@ -8,6 +7,8 @@ import Login from "./Auth/Login"
 import CreateTeam from "./CreateTeam"
 import MainWindow from "./MainWindow"
 import GettingStarted from "./GettingStarted"
+import GuestRoute from "./wrappers/GuestRoute"
+import PrivateRoute from "./wrappers/PrivateRoute"
 
 export const routes = {
 	home: "/",
@@ -22,37 +23,6 @@ export const routes = {
 		create: "/create-team"
 	}
 }
-
-const isAuthenticated = () => {
-	const token = localStorage.getItem("token")
-	const refreshToken = localStorage.getItem("refreshToken")
-
-	try {
-		decode(token)
-		decode(refreshToken)
-	} catch (error) {
-		return false
-	}
-
-	return true
-}
-
-export const GuestRoute = ({ component: Component, ...rest }) => (
-	<Route {...rest} render={props => (!isAuthenticated() ? <Component {...props} /> : <Redirect to={routes.team} />)} />
-)
-
-export const PrivateRoute = ({ component: Component, ...rest }) => (
-	<Route
-		{...rest}
-		render={props =>
-			isAuthenticated() ? (
-				<Component {...props} />
-			) : (
-				<Redirect to={{ pathname: routes.auth.login, state: { from: props.location } }} />
-			)
-		}
-	/>
-)
 
 export default () => {
 	return (

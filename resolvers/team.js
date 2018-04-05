@@ -1,20 +1,39 @@
-import { requiresAuth } from "../auth/permissions"
+import { isAuthenticatedResolver } from "../auth/permissions"
 
 export default {
 	Query: {
-		allTeams: requiresAuth.createResolver(async (parent, args, { models, user }) =>
-			models.Team.findAll({ where: { owner: user.id } }, { raw: true })
-		)
+		allTeams: isAuthenticatedResolver.createResolver(
+			async (parent, args, { models: { Team }, user }) => {
+				return await Team.findAll({ where: { owner: user.id } }, { raw: true })
+			})
 	},
 	Mutation: {
-		createTeam: requiresAuth.createResolver(async (parent, args, { models, user }) => {
+		addTeamMember: isAuthenticatedResolver.createResolver(async (parent, { email, teamId }, { models, user }) => {
+			const userToAdd = await models.User.findOne({ where: { email } }, { raw: true })
+
+			if (!userToAdd) {
+				// TODO: Send Email invite to register. Should contain some sort of callback that can be used to join the teamID
+				console.log("user does not exist, email them a sign up")
+
+				return { ok: false, errors: [{ path: "invite-email", message: "function not implemented" }] }
+				return
+			}
+
+			try {
+				await models.Member.create({ userId: userToAdd.id, teamId })
+				return { ok: true }
+			} catch ({ errors }) {
+				return { ok: false, errors: errors.map(({ path, message }) => ({ path, message })) }
+			}
+		}),
+		createTeam: isAuthenticatedResolver.createResolver(async (parent, args, { models, user }) => {
 			try {
 				const team = await models.Team.create({ ...args, owner: user.id })
 				await models.Channel.create({ name: "general", public: true, teamId: team.id })
 
 				return {
 					ok: true,
-					team,
+					team
 				}
 			} catch ({ errors }) {
 				return { ok: false, errors: errors.map(({ path, message }) => ({ path, message })) }

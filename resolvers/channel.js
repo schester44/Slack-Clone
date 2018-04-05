@@ -1,6 +1,8 @@
+import { isAuthenticatedResolver } from "../auth/permissions"
+
 export default {
 	Mutation: {
-		createChannel: async (parent, args, { models }) => {
+		createChannel: isAuthenticatedResolver.createResolver(async (parent, args, { models }) => {
 			try {
 				const channel = await models.Channel.create(args)
 				return {
@@ -15,6 +17,6 @@ export default {
 					})
 				}
 			}
-		}
+		})
 	}
 }

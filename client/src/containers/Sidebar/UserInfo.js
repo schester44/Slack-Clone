@@ -68,7 +68,6 @@ class UserInfo extends Component {
 		return (
 			<Wrapper onClick={this.handleClick} innerRef={el => (this.elementRef = el)}>
 				<div>
-					<h5 style={{ color: "rgba(211,211,211,1.0)" }}>{teamName}</h5>
 					<UserDetails username={username} teamName={teamName} />
 				</div>
 

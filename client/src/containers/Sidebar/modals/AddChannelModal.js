@@ -1,8 +1,8 @@
 import React, { Component } from "react"
 import { Modal, Form, Button } from "semantic-ui-react"
 import { graphql } from "react-apollo"
-import { createChannelMutation } from "../../graphql/mutations/channels"
-import { allTeamsQuery } from "../../graphql/queries/teams"
+import { createChannelMutation } from "../../../graphql/mutations/channels"
+import { allTeamsQuery } from "../../../graphql/queries/teams"
 
 const initialState = {
 	fields: {

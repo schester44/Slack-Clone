@@ -6,6 +6,7 @@ import jwt from "jsonwebtoken"
 import { graphqlExpress, graphiqlExpress } from "apollo-server-express"
 import { makeExecutableSchema } from "graphql-tools"
 import { fileLoader, mergeTypes, mergeResolvers } from "merge-graphql-schemas"
+import { formatError } from "apollo-errors"
 
 import models from "./models"
 import { refreshTokens } from "./auth"
@@ -55,6 +56,7 @@ app.use(
 	graphqlExpress(req => {
 		return {
 			schema,
+			formatError,
 			context: {
 				models,
 				user: req.user,

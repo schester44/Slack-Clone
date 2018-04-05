@@ -1,20 +1,16 @@
-const createResolver = (resolver) => {
-    const baseResolver = resolver;
+import { createError } from "apollo-errors"
+import { baseResolver } from "./baseResolver"
 
-    baseResolver.createResolver = childResolver => {
-			const newResolver = async (parent, args, context, info) => {
-				await resolver(parent, args, context, info)
-				return childResolver(parent, args, context, info)
-			}
+const ForbiddenError = createError('ForbiddenError', {
+    path: 'authentication',
+    message: 'This action is forbidden'
+})
 
-			return createResolver(newResolver)
-		}
+const AuthenticationRequiredError = createError("AuthenticationRequiredError", {
+	path: "authentication",
+	message: "You must be logged in to do this"
+})
 
-    return baseResolver
-}
-
-export const requiresAuth = createResolver((parent, args, context) => {
-    if (!context.user || !context.user.id) {
-        throw new Error('Not authenticated')
-    }
+export const isAuthenticatedResolver = baseResolver.createResolver((root, args, { user }) => {
+    if (!user || !user.id) throw new AuthenticationRequiredError()
 })
