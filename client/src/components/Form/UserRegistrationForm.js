@@ -2,8 +2,7 @@ import React, { Component } from "react"
 import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 
-import { Form, Button } from "semantic-ui-react"
-import FieldError from "./FieldError"
+import { Message, Segment, Form, Button } from "semantic-ui-react"
 
 class UserRegistrationForm extends Component {
 	constructor(props) {
@@ -59,55 +58,68 @@ class UserRegistrationForm extends Component {
 		const { errors, fields } = this.state
 		const { username, email, password } = fields
 
-		return (
-			<Form>
-				<Form.Field error={!!errors.username}>
-					<label>
-						Username <FieldError error={errors.username} />
-					</label>
-					<input
-						size="large"
-						type="text"
-						name="username"
-						value={username}
-						placeholder="Username"
-						onChange={this.handleInputChange}
-					/>
-				</Form.Field>
-				<Form.Field error={!!errors.email}>
-					<label>
-						Email <FieldError error={errors.email} />
-					</label>
-					<input
-						size="large"
-						type="email"
-						name="email"
-						value={email}
-						placeholder="Email"
-						onChange={this.handleInputChange}
-					/>
-				</Form.Field>
-				<Form.Field error={!!errors.password}>
-					<label>
-						Password <FieldError error={errors.password} />
-					</label>
-					<input
-						size="large"
-						type="password"
-						name="password"
-						value={password}
-						placeholder="Password"
-						onChange={this.handleInputChange}
-					/>
-				</Form.Field>
+		const errorKeys = Object.keys(errors)
+		const errorsExist = errorKeys.length > 0
 
-				<Button
-					disabled={password.length < 4 || email.length === 0 || username.length === 0}
-					type="submit"
-					onClick={this.handleSubmit}
-				>
-					Sign Up
-				</Button>
+		return (
+			<Form size={this.props.formSize || "large"}>
+				{errorsExist && (
+					<Message size="tiny" color="black">
+						<Message.Header>There were some errors with your submission.</Message.Header>
+						{errorKeys.map(key => <p key={key}>{errors[key]}</p>)}
+					</Message>
+				)}
+
+				<Segment stacked>
+					<Form.Field error={!!errors.username}>
+						<Form.Input
+							size="large"
+							type="text"
+							icon="user"
+							iconPosition="left"
+							name="username"
+							value={username}
+							placeholder="Username"
+							onChange={this.handleInputChange}
+						/>
+					</Form.Field>
+
+					<Form.Field error={!!errors.email}>
+						<Form.Input
+							size="large"
+							type="email"
+							icon="at"
+							iconPosition="left"
+							name="email"
+							value={email}
+							placeholder="Email"
+							onChange={this.handleInputChange}
+						/>
+					</Form.Field>
+
+					<Form.Field error={!!errors.password}>
+						<Form.Input
+							size="large"
+							icon="lock"
+							iconPosition="left"
+							type="password"
+							name="password"
+							value={password}
+							placeholder="Password"
+							onChange={this.handleInputChange}
+						/>
+					</Form.Field>
+
+					<Button
+						fluid
+						size="large"
+						disabled={password.length < 4 || email.length === 0 || username.length === 0}
+						type="submit"
+						onClick={this.handleSubmit}
+					>
+						Sign Up
+					</Button>
+				</Segment>
 			</Form>
 		)
 	}

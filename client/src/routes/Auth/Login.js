@@ -3,7 +3,7 @@ import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import { routes } from "../../routes"
 
-import { Message, Container, Form, Button, Header } from "semantic-ui-react"
+import { Grid, Segment, Message, Form, Button, Header } from "semantic-ui-react"
 
 class Login extends Component {
 	constructor(props) {
@@ -19,7 +19,6 @@ class Login extends Component {
 
 		this.handleInputChange = this.handleInputChange.bind(this)
 		this.handleSubmit = this.handleSubmit.bind(this)
-
 	}
 
 	handleInputChange({ target: { name, value } }) {
@@ -53,41 +52,55 @@ class Login extends Component {
 		const { fields: { email, password }, error } = this.state
 
 		return (
-			<Container>
-				<Header as="h1">Login</Header>
+			<Grid style={{ height: "100%" }} verticalAlign="middle" textAlign="center">
+				<Grid.Column style={{ maxWidth: "450px" }}>
+					<Header as="h2" color="teal" textAlign="center">
+						Sign In
+					</Header>
 
-				{error.length > 0 && <Message color="red">{error}</Message>}
+					<Form size="large">
+						{error.length > 0 && (
+							<Message size="tiny" color="red">
+								<Message.Header>{error}</Message.Header>
+							</Message>
+						)}
 
-				<Form>
-					<Form.Field>
-						<label>Email</label>
-						<input
-							size="large"
-							type="text"
-							name="email"
-							value={email.value}
-							placeholder="Email"
-							onChange={this.handleInputChange}
-						/>
-					</Form.Field>
+						<Segment stacked>
+							<Form.Input
+								size="large"
+								type="email"
+								icon="at"
+								iconPosition="left"
+								name="email"
+								value={email.value}
+								placeholder="Email"
+								onChange={this.handleInputChange}
+							/>
 
-					<Form.Field>
-						<label>Password</label>
-						<input
-							size="large"
-							type="password"
-							name="password"
-							value={password.value}
-							placeholder="Password"
-							onChange={this.handleInputChange}
-						/>
-					</Form.Field>
+							<Form.Input
+								size="large"
+								icon="lock"
+								iconPosition="left"
+								type="password"
+								name="password"
+								value={password.value}
+								placeholder="Password"
+								onChange={this.handleInputChange}
+							/>
 
-					<Button type="submit" onClick={this.handleSubmit}>
-						Login
-					</Button>
-				</Form>
-			</Container>
+							<Button
+								fluid
+								size="large"
+								disabled={password.length === 0 || email.length === 0}
+								type="submit"
+								onClick={this.handleSubmit}
+							>
+								Sign In
+							</Button>
+						</Segment>
+					</Form>
+				</Grid.Column>
+			</Grid>
 		)
 	}
 }
