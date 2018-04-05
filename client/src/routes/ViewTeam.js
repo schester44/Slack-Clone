@@ -19,7 +19,7 @@ const App = styled.div`
 const ViewTeam = ({ match: { params }}) => {
 
 	const channelName = "general"
-	const currentTeamId = parseInt(params.teamId, 10)
+	const currentTeamId = params.teamId
 
 	return (
 		<App>

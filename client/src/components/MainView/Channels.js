@@ -1,6 +1,7 @@
 import React from "react"
 import styled from "styled-components"
 
+import UserInfo from "./UserInfo"
 import UserStatusBubble from "../UserStatusBubble"
 import { Icon } from "semantic-ui-react"
 
@@ -8,28 +9,8 @@ const Wrapper = styled.div`
 	width: 200px;
 	height: 100%;
 	background: rgba(78, 88, 107, 1);
-	padding: 10px 20px;
+	padding: 8px 0 0 15px;;
 	color: #999;
-`
-const Header = styled.div`
-	margin-bottom: 20px;
-
-	h2,
-	h5 {
-		margin: 0;
-		padding: 0;
-	}
-
-	h2 {
-		font-size: 16px;
-		color: white;
-	}
-
-	h5 {
-		font-weight: 100;
-		font-size: 12px;
-		color: rgba(255, 255, 255, 0.8);
-	}
 `
 
 const List = styled.ul`
@@ -52,7 +33,7 @@ const List = styled.ul`
 		}
 
 		&:not(.heading) {
-			padding: 1px 0px 1px 10px;
+			padding: 1px 0px;
 		}
 	}
 `
@@ -66,7 +47,7 @@ const channel = ({ id, name }) => (
 
 const user = ({ id, username }) => (
 	<li key={`user-${id}`}>
-		<UserStatusBubble />	
+		<UserStatusBubble />
 		{username}
 	</li>
 )
@@ -74,13 +55,7 @@ const user = ({ id, username }) => (
 const Channels = ({ teamName, username, channels, users }) => {
 	return (
 		<Wrapper>
-			<Header>
-				<h2>{teamName}</h2>
-				<h5>
-					<Icon name="time" style={{ color: "yellow" }} />
-					{username}
-				</h5>
-			</Header>
+			<UserInfo teamName={teamName} username={username} />
 
 			<List>
 				<li className="heading">Channels</li>

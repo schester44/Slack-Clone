@@ -9,8 +9,8 @@ import decode from "jwt-decode"
 const Sidebar = ({ data: { loading, allTeams }, currentTeamId }) => {
 	if (loading) return null
 
-	const teamIndex = allTeams.findIndex(team => team.id === currentTeamId)
-    
+	const teamIndex = currentTeamId ? allTeams.findIndex(team => team.id === parseInt(currentTeamId, 10)) : 0
+	
 	const team = teamIndex >= 0 ? allTeams[teamIndex] : allTeams[0]
 
 	const { user } = decode(localStorage.getItem("token"))
@@ -18,10 +18,10 @@ const Sidebar = ({ data: { loading, allTeams }, currentTeamId }) => {
 	return (
 		<Fragment>
 			<Teams
-				teams={allTeams.map(team => ({
-					id: team.id,
-					isActive: team.id === currentTeamId,
-					initials: team.name.charAt(0)
+				teams={allTeams.map(t => ({
+					id: t.id,
+					isActive: t.id === team.id,
+					initials: t.name.charAt(0)
 				}))}
 			/>
 

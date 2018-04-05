@@ -13,7 +13,8 @@ export const routes = {
 	team: "/view-team",
 	auth: {
 		register: "/register",
-		login: "/login"
+		login: "/login",
+		recoverPassword: "/reset-password"
 	},
 	teams: {
 		create: "/create-team"

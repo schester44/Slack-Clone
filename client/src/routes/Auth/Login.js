@@ -3,6 +3,8 @@ import { graphql } from "react-apollo"
 import gql from "graphql-tag"
 import { routes } from "../../routes"
 
+import { Link } from "react-router-dom"
+
 import { Grid, Segment, Message, Form, Button, Header } from "semantic-ui-react"
 
 class Login extends Component {
@@ -97,8 +99,15 @@ class Login extends Component {
 							>
 								Sign In
 							</Button>
+							<Link to={routes.auth.recoverPassword}>
+								<p style={{ textAlign: "right", fontSize: 10, marginTop: 10 }}>Forgot Password?</p>
+							</Link>
 						</Segment>
 					</Form>
+
+					<Message style={{ background: "transparent" }}>
+						New to us? <Link to={routes.auth.register}>Sign Up</Link>
+					</Message>
 				</Grid.Column>
 			</Grid>
 		)
