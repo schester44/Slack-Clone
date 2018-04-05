@@ -1,6 +1,6 @@
 import React from "react"
 import styled from "styled-components"
-import Sidebar from "../containers/Sidebar"
+import Sidebar from "../containers/Sidebar/index.js"
 import RoomHeader from "../components/MainView/RoomHeader"
 import ChatWindow from "../components/MainView/ChatWindow"
 
@@ -16,7 +16,7 @@ const App = styled.div`
 	}
 `
 
-const ViewTeam = ({ match: { params }}) => {
+const MainWindow = ({ match: { params }}) => {
 
 	const channelName = "general"
 	const currentTeamId = params.teamId
@@ -32,4 +32,4 @@ const ViewTeam = ({ match: { params }}) => {
 	)
 }
 
-export default ViewTeam
+export default MainWindow

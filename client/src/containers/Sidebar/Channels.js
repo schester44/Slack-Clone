@@ -2,14 +2,14 @@ import React from "react"
 import styled from "styled-components"
 
 import UserInfo from "./UserInfo"
-import UserStatusBubble from "../UserStatusBubble"
+import UserStatusBubble from "../../components/UserStatusBubble"
 import { Icon } from "semantic-ui-react"
 
 const Wrapper = styled.div`
 	width: 200px;
 	height: 100%;
 	background: rgba(78, 88, 107, 1);
-	padding: 8px 0 0 15px;;
+	padding: 8px 0 0 15px;
 	color: #999;
 `
 
@@ -46,19 +46,27 @@ const channel = ({ id, name }) => (
 )
 
 const user = ({ id, username }) => (
-	<li key={`user-${id}`}>
-		<UserStatusBubble />
+	<li key={`user-${id}`} style={{ display: "flex" }}>
+		<div style={{ position: "relative", marginRight: 3 }}>
+			<img src={`http://i.pravatar.cc/30?img=${id}`} alt="profile" />
+			<div style={{ position: "absolute", bottom: 1, right: "-4px" }}>
+				<UserStatusBubble />
+			</div>
+		</div>
 		{username}
 	</li>
 )
 
-const Channels = ({ teamName, username, channels, users }) => {
+const Channels = ({ teamName, username, channels, users, onCreationChannelClick }) => {
 	return (
 		<Wrapper>
 			<UserInfo teamName={teamName} username={username} />
 
 			<List>
-				<li className="heading">Channels</li>
+				<li className="heading">
+					Channels 
+					<Icon onClick={onCreationChannelClick} link={true} style={{ marginLeft: 2, cursor: "pointer" }} name="plus circle" />
+				</li>
 				{channels.map(channel)}
 			</List>
 

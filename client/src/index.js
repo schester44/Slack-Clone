@@ -7,7 +7,7 @@ import Routes from "./routes"
 import "semantic-ui-css/semantic.min.css"
 import "./index.css"
 
-import client from "./apollo/createClient"
+import client from "./graphql/createClient"
 
 const App = (
 	<ApolloProvider client={client}>
