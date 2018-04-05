@@ -20,6 +20,7 @@ export default {
 
 			if (!userToAdd) {
 				// TODO: Send Email invite to register. Should contain some sort of callback that can be used to join the teamID
+				// TODO -- Prevent spamming use, if sent more than once within X days, don't send again.
 				console.log("user does not exist, email them a sign up")
 
 				return { ok: false, errors: [{ path: "invite-email", message: "function not implemented" }] }

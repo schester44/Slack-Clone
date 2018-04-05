@@ -38,6 +38,7 @@ class MainWindow extends Component {
 		super(props)
 	}
 
+	// TODO: THIS PROBABLY SHOULDNT BE HERE
 	componentWillReceiveProps({ data }) {
 		if (data.error && data.error.graphQLErrors) {
 			data.error.graphQLErrors.forEach((error) => {
