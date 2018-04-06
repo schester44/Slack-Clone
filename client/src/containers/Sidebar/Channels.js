@@ -8,6 +8,7 @@ import { Icon } from "semantic-ui-react"
 
 const Wrapper = styled.div`
 	width: 200px;
+	min-width: 190px;
 	height: 100%;
 	background: rgba(78, 88, 107, 1);
 	padding: 8px 0 0 15px;
@@ -44,17 +45,20 @@ const List = styled.ul`
 	}
 `
 
-const InviteButton = styled.button`
-	border: 0;
-	padding: 2px 4px;
+const InviteButton = styled.div`
 	border-radius: 5px;
 	background: #e0e1e2;
-	width: 40px;
-	height: 20px;
+	padding: 2px;
+	max-height: 16px;
 	color: rgba(0, 0, 0, 0.6);
 	font-size: 0.78571429rem;
+	line-height:1;
 	cursor: pointer;
 	outline: none;
+
+	&:hover {
+		transform: scale(1.2);
+	}
 `
 
 const user = ({ id, username }) => (
