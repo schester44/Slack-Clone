@@ -13,13 +13,13 @@ import PrivateRoute from "./wrappers/PrivateRoute"
 export const routes = {
 	home: "/",
 	team: "/view-team",
-	gettingStarted: "/getting-started",
 	auth: {
 		register: "/register",
 		login: "/login",
 		recoverPassword: "/reset-password"
 	},
 	teams: {
+		gettingStarted: "/getting-started",
 		create: "/create-team"
 	}
 }
@@ -32,7 +32,7 @@ export default () => {
 				<GuestRoute path={routes.auth.register} component={Register} />
 				<GuestRoute path={routes.auth.login} component={Login} />
 				<PrivateRoute path={`${routes.team}/:teamId?/:channelId?`} component={MainWindow} />
-				<PrivateRoute path={routes.gettingStarted} component={GettingStarted} />
+				<PrivateRoute path={routes.teams.gettingStarted} component={GettingStarted} />
 				<PrivateRoute path={routes.teams.create} component={CreateTeam} />
 			</Switch>
 		</Router>
