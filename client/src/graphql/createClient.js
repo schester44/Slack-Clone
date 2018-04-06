@@ -42,7 +42,7 @@ const link = ApolloLink.from([
     onErrorLink,
     AuthLink,
 	new HttpLink({
-		uri: "http://10.16.14.95:3333/graphql"
+		uri: "http://localhost:3333/graphql"
 	}),
 ])
 
