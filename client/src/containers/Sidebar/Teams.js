@@ -6,6 +6,7 @@ import { routes } from "../../routes"
 const TeamListWrapper = styled.div`
 	padding-top: 10px;
 	width: 60px;
+	min-width: 60px;
 	height: 100%;
 	background: rgba(41, 45, 54, 1);
 	display: flex;

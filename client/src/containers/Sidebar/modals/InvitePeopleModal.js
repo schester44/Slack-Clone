@@ -18,10 +18,10 @@ class AddChannelModal extends Component {
 		this.state = {
 			fields: {
 				teamId: props.teamId,
-				name: "",
-				isPublic: true
+				email: ""
 			},
-			isSubmitting: false
+			isSubmitting: false,
+			invitedFriends: []
 		}
 
 		this.handleInputChange = this.handleInputChange.bind(this)
@@ -40,31 +40,48 @@ class AddChannelModal extends Component {
 	async handleSubmission() {
 		this.setState({ isSubmitting: true })
 
-		const { teamId, name } = this.state.fields
+		const { teamId, email } = this.state.fields
 
-		const response = await this.props.mutate({
-			variables: { teamId, name }
-		})
-
-		if (response.data.createChannel) {
-			this.props.onClose()
+		const response = await this.props.mutate({ variables: { teamId, email } })
+		
+		const { ok, errors } = response.data.addTeamMember
+		
+		if (ok) {
+			this.setState({
+				invitedFriends: [...this.state.invitedFriends, email],
+				isSubmitting: false,
+				fields: { ...this.state.fields, email: "" }
+			})
+			
+			// this.props.onClose()
+		
 		} else {
-			// TODO: Report error
+			// TODO: Show friendly error
 		}
 	}
 
 	render() {
 		const { open, onClose } = this.props
 		const { isSubmitting, fields } = this.state
-		const { name } = fields
+		const { email } = fields
 
 		return (
 			<Modal size="tiny" open={open} onClose={onClose}>
-				<Modal.Header>Invite People</Modal.Header>
+				<Modal.Header>Invite People to Your Team</Modal.Header>
 				<Modal.Content>
 					<Form>
-						<Button disabled={name.length === 0 || isSubmitting} onClick={this.handleSubmission} fluid positive>
-							Send Invites
+						<Form.Field>
+							<input
+								value={email}
+								type="email"
+								onChange={this.handleInputChange}
+								name="email"
+								placeholder="johnny@example.com"
+							/>
+						</Form.Field>
+
+						<Button disabled={email.length === 0 || isSubmitting} onClick={this.handleSubmission} fluid positive>
+							Invite User
 						</Button>
 					</Form>
 				</Modal.Content>
