@@ -4,7 +4,7 @@ import { graphql } from "react-apollo"
 import decode from "jwt-decode"
 
 import { routes } from "./index"
-
+import { Redirect } from "react-router-dom" 
 import Sidebar from "../containers/Sidebar/index.js"
 import RoomHeader from "../components/MainView/RoomHeader"
 import ChatWindow from "../components/MainView/ChatWindow"
@@ -38,28 +38,15 @@ class MainWindow extends Component {
 		super(props)
 	}
 
-	// TODO: THIS PROBABLY SHOULDNT BE HERE
-	componentWillReceiveProps({ data }) {
-		if (data.error && data.error.graphQLErrors) {
-			data.error.graphQLErrors.forEach((error) => {
-				if (error.name === "AuthenticationRequiredError") {
-					this.props.history.push(routes.auth.login)
-					return;
-				}
-
-				if (error.name === "NoTeamsExistError") {
-					this.props.history.push(routes.teams.create)
-					return;
-				 }
-			 })
-		}
-
-	}
-
 	render() {
-		const { data: { loading, allTeams }, match: { params } } = this.props
+		const { data: { loading, allTeams, inviteTeams }, match: { params } } = this.props
 
-		if (loading || !allTeams || allTeams.length === 0) return null
+
+		if (loading) return null
+
+		console.log(allTeams, inviteTeams);
+
+		if (!allTeams.length) return <Redirect to={routes.teams.gettingStarted} />
 
 		const { user } = decode(localStorage.getItem("token"))
 

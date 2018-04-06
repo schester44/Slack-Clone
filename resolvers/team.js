@@ -1,18 +1,24 @@
 import { isAuthenticatedResolver } from "../auth/permissions"
 import { createError } from "apollo-errors"
 
-const NoTeamsExistError = createError("NoTeamsExistError", {
-	message: `You haven't created a team yet`
-})
-
 export default {
 	Query: {
-		allTeams: isAuthenticatedResolver.createResolver(
-			async (parent, args, { models: { Team }, user }) => {
-				const teams = await Team.findAll({ where: { owner: user.id } }, { raw: true })
-				if (teams.length === 0) throw new NoTeamsExistError()
-				return teams
-			})
+		allTeams: isAuthenticatedResolver.createResolver(async (parent, args, { models: { Team }, user }) =>
+			Team.findAll({ where: { owner: user.id } }, { raw: true })
+		),
+		inviteTeams: isAuthenticatedResolver.createResolver(async (parent, args, { models: { Team, User }, user }) =>
+			Team.findAll(
+				{
+					include: [
+						{
+							model: User,
+							where: { id: user.id }
+						}
+					]
+				},
+				{ raw: true }
+			)
+		)
 	},
 	Mutation: {
 		addTeamMember: isAuthenticatedResolver.createResolver(async (parent, { email, teamId }, { models, user }) => {
@@ -24,10 +30,10 @@ export default {
 				console.log("user does not exist, email them a sign up")
 
 				return { ok: false, errors: [{ path: "invite-email", message: "function not implemented" }] }
-				return
 			}
 
 			try {
+				// How to handle inviting ppl who are already invited?.. and why are we creating a member? maybe the user doesn't want to be a member? I think this stuff shouldn't happen until the user accepts the `invite`
 				await models.Member.create({ userId: userToAdd.id, teamId })
 				return { ok: true }
 			} catch ({ errors }) {
@@ -36,12 +42,15 @@ export default {
 		}),
 		createTeam: isAuthenticatedResolver.createResolver(async (parent, args, { models, user }) => {
 			try {
-				const team = await models.Team.create({ ...args, owner: user.id })
-				await models.Channel.create({ name: "general", public: true, teamId: team.id })
+				const response = await models.sequelize.transaction(async () => {
+					const team = await models.Team.create({ ...args, owner: user.id })
+					await models.Channel.create({ name: "general", public: true, teamId: team.id })
+					return team
+				})
 
 				return {
 					ok: true,
-					team
+					team: response
 				}
 			} catch ({ errors }) {
 				return { ok: false, errors: errors.map(({ path, message }) => ({ path, message })) }
